@@ -1,0 +1,102 @@
+public class KhachHang {
+    private String hoTenChuHo;
+    private String soNha;
+    private String maSoCongTo;
+
+    public KhachHang(String hoTenChuHo, String soNha, String maSoCongTo) {
+        this.hoTenChuHo = hoTenChuHo;
+        this.soNha = soNha;
+        this.maSoCongTo = maSoCongTo;
+    }
+
+    public String getHoTenChuHo() {
+        return hoTenChuHo;
+    }
+
+    public String getSoNha() {
+        return soNha;
+    }
+
+    public String getMaSoCongTo() {
+        return maSoCongTo;
+    }
+
+    public void hienThiThongTin() {
+        System.out.println("Họ tên chủ hộ: " + hoTenChuHo);
+        System.out.println("Số nhà: " + soNha);
+        System.out.println("Mã số công tơ: " + maSoCongTo);
+    }
+}
+public class BienLai {
+    private KhachHang khachHang;
+    private int chiSoCu;
+    private int chiSoMoi;
+    private double soTienPhaiTra;
+
+    public BienLai(KhachHang khachHang, int chiSoCu, int chiSoMoi) {
+        this.khachHang = khachHang;
+        this.chiSoCu = chiSoCu;
+        this.chiSoMoi = chiSoMoi;
+        tinhSoTienPhaiTra();
+    }
+
+    private void tinhSoTienPhaiTra() {
+        int soDien = chiSoMoi - chiSoCu;
+        if (soDien <= 50) {
+            soTienPhaiTra = soDien * 1250;
+        } else if (soDien <= 100) {
+            soTienPhaiTra = 50 * 1250 + (soDien - 50) * 1500;
+        } else {
+            soTienPhaiTra = 50 * 1250 + 50 * 1500 + (soDien - 100) * 2000;
+        }
+    }
+
+    public void hienThiThongTin() {
+        khachHang.hienThiThongTin();
+        System.out.println("Chỉ số cũ: " + chiSoCu);
+        System.out.println("Chỉ số mới: " + chiSoMoi);
+        System.out.println("Số tiền phải trả: " + soTienPhaiTra + " VNĐ");
+    }
+}
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Nhập số lượng hộ sử dụng điện: ");
+        int n = scanner.nextInt();
+
+        BienLai[] bienLais = new BienLai[n];
+        for (int i = 0; i < n; i++) {
+            scanner.nextLine(); 
+            System.out.println("Nhập thông tin cho hộ sử dụng điện thứ " + (i + 1));
+            KhachHang khachHang = new KhachHang();
+            System.out.print("Nhập họ tên chủ hộ: ");
+            khachHang.setHoTen(scanner.nextLine());
+            System.out.print("Nhập số nhà: ");
+            khachHang.setSoNha(scanner.nextLine());
+            System.out.print("Nhập mã số công tơ: ");
+            khachHang.setMaSoCongTo(scanner.nextLine());
+
+            BienLai bienLai = new BienLai();
+            bienLai.setKhachHang(khachHang);
+            System.out.print("Nhập chỉ số cũ: ");
+            bienLai.setChiSoCu(scanner.nextDouble());
+            System.out.print("Nhập chỉ số mới: ");
+            bienLai.setChiSoMoi(scanner.nextDouble());
+
+            bienLais[i] = bienLai;
+        }
+
+        System.out.println("Thông tin các biên lai đã nhập:");
+        for (int i = 0; i < n; i++) {
+            System.out.println("Biên lai thứ " + (i + 1) + ":");
+            bienLais[i].hienThiThongTin();
+        }
+
+        System.out.println("Tiền điện phải trả của mỗi hộ sử dụng điện:");
+        for (int i = 0; i < n; i++) {
+            System.out.println("Hộ sử dụng điện thứ " + (i + 1) + ": " + bienLais[i].tinhTienDien() + " VNĐ");
+        }
+    }
+}
